@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+        img {
+            box-shadow: 0 0 15px;
+            border-radius: 50%;
+            width: 100%;
+        }
+
+        picture {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            width: 100px;
+        }
+
+        .disabled {
+            opacity: 0.4;
+        }
+
+        picture.is-small {
+            width: 50px;
+        }
+
+        picture.is-large {
+            width: 150px
+        }
+        i{
+            border: 1px solid black;
+            border-radius: 50%;
+            display: flex;
+            min-height: 50px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Women in tech</h1>
+    <div id="app">
+
+    </div>
+    <script type="text/babel">
+        const $app = document.getElementById("app");
+        const h = React.createElement;
+        const useState = React.useState;
+
+        const Avatar = ({ id, name = "defaultName", size }) => {
+            const [enabled, setEnabled] = useState(true);
+
+            const src = `https://randomuser.me/api/portraits/women/${id}.jpg`
+
+            let pictureClassName = '';
+            if (size === "small") {
+                pictureClassName = "is-small";
+            } else if (size === "large") {
+                pictureClassName = "is-large";
+            }
+
+            const imgClassName = enabled ? "" : "disabled";
+
+            //return h('img', {src} )
+            // *** JSX *** 
+            return (
+                <picture
+                    className={pictureClassName}>
+                    {
+                        id ? (
+                            <img
+                                onClick={() => {
+                                    setEnabled(!enabled)
+                                }}
+                                className={imgClassName}
+                                src={src} />
+                        ) : (<i>Sin imagen</i>
+                        )
+                    }
+                    
+                    <p>{enabled ? name : "desactivada"}</p>
+                </picture>
+            )
+        }
+
+        function Contador(){
+            const [contadorValue, contadorUpdate] = useState(33);
+            const [numeroDeVeces, numeroUpdate] = useState(0);
+
+            return (
+                <React.Fragment>
+                    <button onClick={() => {
+                        contadorUpdate(contadorValue+1);
+                        numeroUpdate(numeroDeVeces+1);
+                    }}>Incrementar +</button>
+                    <button onClick={() => {
+                        contadorUpdate(contadorValue-1);
+                        numeroUpdate(numeroDeVeces+1);
+                    }}>Decrementar -</button>
+                    <span>{contadorValue}</span>
+                    <h1> Numero de veces actualizado: {numeroDeVeces}</h1>
+                </React.Fragment>
+            )
+        }
+
+        ReactDOM.render(
+            <div>
+                <Contador/>
+                <Avatar id={60} name='Ana' size="small" />
+                <Avatar id={67} name='Lucia' />
+                <Avatar id={12} name='Lola' size="large" />
+                <Avatar name="Alexia" />
+            </div>,
+            $app
+        );
+    </script>
+
+</body>
+
+</html>
